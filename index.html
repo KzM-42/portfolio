@@ -159,6 +159,26 @@ body.light .hero-text p {
       cursor: pointer;
       font-size: 13px;
     }
+
+    .skill-row {
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 8px;
+      padding: 8px;
+      margin: 0 -8px;
+    }
+
+    .skill-row:hover {
+      background: #4a4a7a;
+    }
+
+    .skill-row:hover .skill-name {
+      color: #b4ef11;
+    }
+
+    .skill-row:hover .skill-bar-fill {
+      background: #b4ef11;
+    }
   </style>
 </head>
 <body>
@@ -179,21 +199,22 @@ body.light .hero-text p {
 
   <div class="section">
     <p class="section-label">skills</p>
-    <div class="skill-row">
+    <div class="skill-row" onclick="showDetail('HTML', 'Progateで学習済み!サイトの骨格を作れます。')">
       <span class="skill-name">HTML</span>
       <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 70%"></div></div>
       <span class="skill-pct">学習済</span>
     </div>
-    <div class="skill-row">
+    <div class="skill-row" onclick="showDetail('CSS', 'Progateで学習済み!見た目のデザインを作れます。')">
       <span class="skill-name">CSS</span>
       <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 70%"></div></div>
       <span class="skill-pct">学習済</span>
     </div>
-    <div class="skill-row">
+    <div class="skill-row" onclick="showDetail('JavaScript', '現在学習中！アニメーションが作れるようになりました。')">
       <span class="skill-name">JavaScript</span>
       <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 35%"></div></div>
       <span class="skill-pct">学習中</span>
     </div>
+    <p id="detail-box" style="margin-top: 1rem; font-size: 14px; color: #aaaacc; min-height: 20px;"></p>
   </div>
 
   <div class="section">
@@ -221,6 +242,11 @@ body.light .hero-text p {
   button.addEventListener('click', function() {
     document.body.classList.toggle('light');
   });
+
+  function showDetail(name, text) {
+    const box = document.querySelector('#detail-box');
+    box.textContent = name + ' → ' + text;
+  }
 </script>
 
 
