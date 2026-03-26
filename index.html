@@ -227,6 +227,21 @@ body.light .hero-text p {
     <p class="intro-text">笑顔のきっかけを作っていきます。</p>
   </div>
 
+  <div class="section">
+    <p class="section-label">counter</p>
+    <p id="count-display" style="font-size: 48px; font-weight: 500; margin-bottom: 1rem;">0</p>
+    <button onclick="countUp()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px;">+1</button>
+    <button onclick="countDown()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">-1</button>
+    <button onclick="countReset()" style="background: #3a1a1a; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">リセット</button>
+    <button onclick="autoCount()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">自動カウント</button>
+
+
+  
+  </div>
+
+  
+
+
   <script>
   const bars = document.querySelectorAll('.skill-bar-fill');
   bars.forEach(function(bar) {
@@ -241,14 +256,46 @@ body.light .hero-text p {
   const button = document.querySelector('#toggle');
   button.addEventListener('click', function() {
     document.body.classList.toggle('light');
+    if (document.body.classList.contains('light')) {
+      button.textContent = 'ダークモード';
+    } else {
+      button.textContent = 'ライトモード';
+    }
   });
 
   function showDetail(name, text) {
     const box = document.querySelector('#detail-box');
     box.textContent = name + ' → ' + text;
   }
-</script>
 
+  let count = 0;
+  function countUp() {
+    count = count + 1;
+    document.querySelector('#count-display').textContent = count;
+  }
+
+  function countDown() {
+    count = count - 1;
+    document.querySelector('#count-display').textContent = count;
+  }
+
+  function countReset() {
+    count = 0;
+    document.querySelector('#count-display').textContent = count;
+  }
+
+  function autoCount() {
+    count = 0;
+    for (let i = 1; i <= 10; i++) {
+      setTimeout(function(num) {
+        count = num;
+        document.querySelector('#count-display').textContent = count;
+      }, i * 100, i);
+    }
+  }
+
+
+  </script>
 
 </body>
 
