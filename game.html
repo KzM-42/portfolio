@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字当てゲーム</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a2e;
+      color: #ffffff;
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game {
+      background: #16213e;
+      border: 0.5px solid #2e2e4a;
+      border-radius: 16px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #aaaacc;
+      margin-bottom: 2rem;
+    }
+
+    input {
+      background: #0f3460;
+      border: 0.5px solid #4a4a7a;
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: 18px;
+      width: 120px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      background: #0f3460;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    #message {
+      font-size: 18px;
+      margin: 1.5rem 0;
+      min-height: 28px;
+      color: #b4ef11;
+    }
+
+    #tries {
+      font-size: 13px;
+      color: #aaaacc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game">
+    <h1>数字当てゲーム</h1>
+    <p class="subtitle">1〜50の数字を当ててください</p>
+
+    <input type="number" id="guess-input" placeholder="?" min="1" max="100" />
+    <p id="message"></p>
+    <p id="tries">挑戦回数: 0</p>
+    <button onclick="checkGuess()">答える</button>
+    <button onclick="resetGame()">リセット</button>
+  </div>
+
+  <script>
+    let answer = Math.floor(Math.random() * 50) + 1;
+    let tries = 0;
+
+    function checkGuess() {
+      const input = document.querySelector('#guess-input');
+      const guess = Number(input.value);
+      const message = document.querySelector('#message');
+      const triesDisplay = document.querySelector('#tries');
+
+      if (guess < 1 || guess > 50) {
+        message.textContent = '1〜50の数字を入力してください';
+        return;
+      }
+
+      tries = tries + 1;
+      triesDisplay.textContent = '挑戦回数: ' + tries;
+
+      if (guess === answer) {
+        message.textContent = '正解！' + tries + '回で当てました！';
+        message.style.color = '#b4ef11';
+      } else if (guess < answer) {
+        message.textContent = 'もっと大きい数字です';
+        message.style.color = '#aaaaff';
+      } else {
+        message.textContent = 'もっと小さい数字です';
+        message.style.color = '#ffaaaa';
+      }
+
+      input.value = '';
+    }
+
+    function resetGame() {
+      answer = Math.floor(Math.random() * 50) + 1;
+      tries = 0;
+      document.querySelector('#tries').textContent = '挑戦回数: 0';
+      document.querySelector('#message').textContent = '';
+      document.querySelector('#guess-input').value = '';
+    }
+  </script>
+
+</body>
+</html>
