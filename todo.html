@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDoアプリ</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a2e;
+      color: #ffffff;
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      background: #16213e;
+      border: 0.5px solid #2e2e4a;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      flex: 1;
+      background: #0f3460;
+      border: 0.5px solid #4a4a7a;
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #aaaacc;
+    }
+
+    .add-btn {
+      background: #b4ef11;
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .todo-list {
+      list-style: none;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 0.5px solid #2e2e4a;
+    }
+
+    .todo-item:last-child {
+      border-bottom: none;
+    }
+
+    .todo-text {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .todo-text.done {
+      text-decoration: line-through;
+      color: #555577;
+    }
+
+    .check-btn {
+      background: #0f3460;
+      color: #ffffff;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .check-btn.done {
+      background: #b4ef11;
+      color: #1a1a2e;
+    }
+
+    .delete-btn {
+      background: none;
+      color: #555577;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .delete-btn:hover {
+      color: #ff6666;
+    }
+
+    .empty {
+      text-align: center;
+      color: #555577;
+      font-size: 14px;
+      padding: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <h1>ToDo</h1>
+    <div class="input-row">
+      <input type="text" id="todo-input" placeholder="やることを入力..." />
+      <button class="add-btn" onclick="addTodo()">追加</button>
+    </div>
+    <ul class="todo-list" id="todo-list">
+      <p class="empty" id="empty-msg">タスクがありません</p>
+    </ul>
+  </div>
+
+  <script>
+    let todos = [];
+
+    function addTodo() {
+      const input = document.querySelector('#todo-input');
+      const text = input.value.trim();
+
+      if (text === '') {
+        return;
+      }
+
+      todos.push({ text: text, done: false });
+      input.value = '';
+      renderTodos();
+    }
+
+    function toggleTodo(index) {
+      todos[index].done = !todos[index].done;
+      renderTodos();
+    }
+
+    function deleteTodo(index) {
+      todos.splice(index, 1);
+      renderTodos();
+    }
+
+    function renderTodos() {
+      const list = document.querySelector('#todo-list');
+      const emptyMsg = document.querySelector('#empty-msg');
+
+      list.innerHTML = '';
+
+      if (todos.length === 0) {
+        list.appendChild(emptyMsg);
+        return;
+      }
+
+      todos.forEach(function(todo, index) {
+        const item = document.createElement('li');
+        item.className = 'todo-item';
+        item.innerHTML = `
+          <button class="check-btn ${todo.done ? 'done' : ''}" onclick="toggleTodo(${index})">✓</button>
+          <span class="todo-text ${todo.done ? 'done' : ''}">${todo.text}</span>
+          <button class="delete-btn" onclick="deleteTodo(${index})">×</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    document.querySelector('#todo-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        addTodo();
+      }
+    });
+  </script>
+
+</body>
+</html>
