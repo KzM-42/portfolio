@@ -35,12 +35,44 @@
       margin-bottom: 1.5rem;
     }
 
+    .search-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .city-select {
+      flex: 1;
+      background: #0f3460;
+      border: 0.5px solid #4a4a7a;
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .city-select option {
+      background: #0f3460;
+    }
+
+    .search-btn {
+      background: #b4ef11;
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
     .weather-icon {
       font-size: 64px;
       margin-bottom: 1rem;
     }
 
-    .city {
+    .city-name {
       font-size: 14px;
       color: #aaaacc;
       margin-bottom: 4px;
@@ -86,11 +118,26 @@
 <body>
 
   <div class="app">
-    <h1>今日の天気</h1>
+    <h1>天気アプリ</h1>
+
+    <div class="search-row">
+      <select class="city-select" id="city-select">
+        <option value="40.82,140.74,青森">青森</option>
+        <option value="35.68,139.69,東京">東京</option>
+        <option value="34.69,135.50,大阪">大阪</option>
+        <option value="35.01,135.76,京都">京都</option>
+        <option value="33.59,130.42,福岡">福岡</option>
+        <option value="43.06,141.35,札幌">札幌</option>
+        <option value="38.27,140.87,仙台">仙台</option>
+        <option value="26.21,127.68,那覇">那覇</option>
+      </select>
+      <button class="search-btn" onclick="getWeather()">検索</button>
+    </div>
+
     <p class="loading" id="loading">取得中...</p>
     <div id="weather-content" style="display: none;">
       <div class="weather-icon" id="icon"></div>
-      <p class="city">青森</p>
+      <p class="city-name" id="city-name"></p>
       <p class="temp" id="temp"></p>
       <p class="desc" id="desc"></p>
       <div class="details">
@@ -111,38 +158,49 @@
   </div>
 
   <script>
-    const lat = 40.82;
-    const lon = 140.74;
+    function getWeather() {
+      const select = document.querySelector('#city-select');
+      const parts = select.value.split(',');
+      const lat = parts[0];
+      const lon = parts[1];
+      const cityName = parts[2];
 
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FTokyo`)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        const current = data.current;
+      document.querySelector('#loading').style.display = 'block';
+      document.querySelector('#weather-content').style.display = 'none';
 
-        document.querySelector('#temp').textContent = Math.round(current.temperature_2m) + '°';
-        document.querySelector('#humidity').textContent = current.relative_humidity_2m + '%';
-        document.querySelector('#wind').textContent = current.wind_speed_10m + 'm/s';
-        document.querySelector('#feels').textContent = Math.round(current.apparent_temperature) + '°';
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FTokyo`)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          const current = data.current;
 
-        const code = current.weather_code;
-        let icon = '☀️';
-        let desc = '晴れ';
+          document.querySelector('#temp').textContent = Math.round(current.temperature_2m) + '°';
+          document.querySelector('#humidity').textContent = current.relative_humidity_2m + '%';
+          document.querySelector('#wind').textContent = current.wind_speed_10m + 'm/s';
+          document.querySelector('#feels').textContent = Math.round(current.apparent_temperature) + '°';
+          document.querySelector('#city-name').textContent = cityName;
 
-        if (code === 0) { icon = '☀️'; desc = '快晴'; }
-        else if (code <= 3) { icon = '⛅'; desc = '曇り'; }
-        else if (code <= 49) { icon = '🌫️'; desc = '霧'; }
-        else if (code <= 69) { icon = '🌧️'; desc = '雨'; }
-        else if (code <= 79) { icon = '❄️'; desc = '雪'; }
-        else if (code <= 99) { icon = '⛈️'; desc = '嵐'; }
+          const code = current.weather_code;
+          let icon = '☀️';
+          let desc = '晴れ';
 
-        document.querySelector('#icon').textContent = icon;
-        document.querySelector('#desc').textContent = desc;
+          if (code === 0) { icon = '☀️'; desc = '快晴'; }
+          else if (code <= 3) { icon = '⛅'; desc = '曇り'; }
+          else if (code <= 49) { icon = '🌫️'; desc = '霧'; }
+          else if (code <= 69) { icon = '🌧️'; desc = '雨'; }
+          else if (code <= 79) { icon = '❄️'; desc = '雪'; }
+          else if (code <= 99) { icon = '⛈️'; desc = '嵐'; }
 
-        document.querySelector('#loading').style.display = 'none';
-        document.querySelector('#weather-content').style.display = 'block';
-      });
+          document.querySelector('#icon').textContent = icon;
+          document.querySelector('#desc').textContent = desc;
+
+          document.querySelector('#loading').style.display = 'none';
+          document.querySelector('#weather-content').style.display = 'block';
+        });
+    }
+
+    getWeather();
   </script>
 
 </body>
