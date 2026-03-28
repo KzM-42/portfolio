@@ -179,6 +179,27 @@ body.light .hero-text p {
     .skill-row:hover .skill-bar-fill {
       background: #b4ef11;
     }
+
+    @media (max-width: 480px) {
+  .hero {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .hero-text h1 {
+    font-size: 24px;
+  }
+
+  .section {
+    padding: 1.5rem 1rem;
+  }
+
+  #toggle {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
   </style>
 </head>
 <body>
@@ -324,6 +345,7 @@ body.light .hero-text p {
   }
 
   let count = 0;
+  let autoTimer = null;
   function countUp() {
     count = count + 1;
     document.querySelector('#count-display').textContent = count;
@@ -340,14 +362,18 @@ body.light .hero-text p {
   }
 
   function autoCount() {
-    count = 0;
-    for (let i = 1; i <= 10; i++) {
-      setTimeout(function(num) {
-        count = num;
-        document.querySelector('#count-display').textContent = count;
-      }, i * 100, i);
-    }
+  clearTimeout(autoTimer);  // ← 前の予約をキャンセル
+  count = 0;
+  let i = 1;
+  function step() {
+    if (i > 10) return;
+    count = i;
+    document.querySelector('#count-display').textContent = count;
+    i++;
+    autoTimer = setTimeout(step, 100);
   }
+  step();
+}
 
 
   </script>
