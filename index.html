@@ -3,375 +3,1029 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KzM Portfolio</title>
+  <title>KzM | Web Creator Portfolio</title>
+  <meta name="description" content="LP制作・Web制作のご依頼はKzMへ。HTML/CSS/JavaScriptとClaude Codeを活用し、高品質なランディングページを制作します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080c14;
+      --surface: #0e1420;
+      --surface-2: #141c2e;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-hover: rgba(255, 255, 255, 0.14);
+      --accent: #4f9eff;
+      --accent-glow: rgba(79, 158, 255, 0.15);
+      --accent-2: #a78bfa;
+      --text: #dce6f5;
+      --text-muted: #6b7d96;
+      --text-dim: #3a4a60;
+      --font: 'Inter', 'Noto Sans JP', sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      background: #1a1a2e;
-      color: #ffffff;
-      font-family: sans-serif;
-      min-height: 100vh;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-weight: 300;
+      overflow-x: hidden;
     }
 
-    .hero {
-      padding: 3rem 2rem 2rem;
-      border-bottom: 0.5px solid #2e2e4a;
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8, 12, 20, 0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-decoration: none;
+      background: linear-gradient(135deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 0.78rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.04em !important;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; color: #fff !important; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(79,158,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,158,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(79,158,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      bottom: 10%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79,158,255,0.1);
+      border: 1px solid rgba(79,158,255,0.2);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-name {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .hero-name span {
+      background: linear-gradient(135deg, #4f9eff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-catch {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .hero-catch strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #3d8ef0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79,158,255,0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-hover);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
       display: flex;
       align-items: center;
-      gap: 2rem;
-      background: #16213e;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
     }
 
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #0f3460;
-      border: 0.5px solid #4a4a7a;
+    .scroll-dot {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, var(--text-dim));
+      animation: scrollAnim 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollAnim {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      40% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      60% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 100px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 64px;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, #4f9eff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ===== ABOUT ===== */
+    #about {
+      border-top: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .highlight-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .highlight-card:hover {
+      border-color: var(--border-hover);
+      background: var(--surface-2);
+    }
+
+    .highlight-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(79,158,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      font-weight: 500;
-      color: #ffffff;
       flex-shrink: 0;
+      font-size: 1rem;
     }
 
-    .hero-text h1 {
-      font-size: 32px;
+    .highlight-content h4 {
+      font-size: 0.88rem;
       font-weight: 500;
-      letter-spacing: 0.08em;
-      color: #ffffff;
-      margin-bottom: 6px;
+      color: #fff;
+      margin-bottom: 4px;
     }
 
-    .hero-text p {
-      font-size: 14px;
-      color: #cccccc;
-      letter-spacing: 0.04em;
+    .highlight-content p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
-    .section {
-      padding: 2rem;
-      border-bottom: 0.5px solid #2e2e4a;
+    /* ===== WORKS ===== */
+    #works {
+      border-top: 1px solid var(--border);
     }
 
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      color: #aaaacc;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
-    .skill-row {
+    .work-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(79,158,255,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .work-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+    }
+
+    .work-card:hover::before { opacity: 1; }
+
+    .work-card.featured {
+      grid-column: span 2;
+      border-color: rgba(79,158,255,0.2);
+    }
+
+    .work-card.featured::before {
+      background: linear-gradient(135deg, rgba(79,158,255,0.06), transparent 60%);
+      opacity: 1;
+    }
+
+    .work-tag-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .work-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      background: rgba(79,158,255,0.1);
+      border: 1px solid rgba(79,158,255,0.15);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .work-tag.purple {
+      color: var(--accent-2);
+      background: rgba(167,139,250,0.1);
+      border-color: rgba(167,139,250,0.15);
+    }
+
+    .work-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .work-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .work-arrow {
+      font-size: 0.78rem;
+      color: var(--text-dim);
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 6px;
+      transition: color 0.2s, gap 0.2s;
     }
 
-    .skill-name {
-      font-size: 14px;
-      color: #ffffff;
-      width: 100px;
+    .work-card:hover .work-arrow {
+      color: var(--accent);
+      gap: 10px;
+    }
+
+    /* ===== SKILLS ===== */
+    #skills {
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.3s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .skill-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .skill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       flex-shrink: 0;
     }
 
-    .skill-bar-bg {
-      flex: 1;
+    .skill-icon.html { background: rgba(228,77,38,0.15); color: #e44d26; }
+    .skill-icon.css  { background: rgba(38,77,228,0.15); color: #264de4; }
+    .skill-icon.js   { background: rgba(240,219,79,0.15); color: #f0db4f; }
+    .skill-icon.ai   { background: rgba(167,139,250,0.15); color: var(--accent-2); }
+
+    .skill-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .skill-level {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: rgba(79,158,255,0.1);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .skill-bar-track {
       height: 3px;
-      background: #2e2e4a;
+      background: rgba(255,255,255,0.06);
       border-radius: 2px;
       overflow: hidden;
+      margin-bottom: 14px;
     }
 
     .skill-bar-fill {
       height: 100%;
-      background: #ffffff;
       border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .skill-pct {
-      font-size: 12px;
-      color: #cccccc;
-      width: 36px;
-      text-align: right;
+    .skill-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .intro-text {
-      font-size: 14px;
-      color: #ffffff;
-      line-height: 1.8;
+    /* ===== CONTACT ===== */
+    #contact {
+      border-top: 1px solid var(--border);
     }
 
-    body.light {
-      background: #f0f0f0;
-      color: #111111;
-    }
-
-    body.light .intro-text {
-  color: #111111;
-}
-
-body.light .skill-name {
-  color: #111111;
-}
-
-body.light .skill-pct {
-  color: #333333;
-}
-
-body.light .hero-text h1 {
-  color: #111111;
-}
-
-body.light .hero-text p {
-  color: #333333;
-}
-
-    body.light .hero {
-      background: #e0e0f0;
-    }
-
-    body.light .section-label {
-      color: #555588;
-    }
-
-    body.light .skill-bar-bg {
-      background: #cccccc;
-    }
-
-    body.light .skill-bar-fill {
-      background: #111111;
-    }
-
-    #toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: #0f3460;
-      color: #ffffff;
-      border: none;
-      padding: 8px 16px;
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
+      padding: 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .skill-row {
-      cursor: pointer;
-      transition: background 0.2s;
-      border-radius: 8px;
-      padding: 8px;
-      margin: 0 -8px;
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(79,158,255,0.1) 0%, transparent 70%);
     }
 
-    .skill-row:hover {
-      background: #4a4a7a;
+    .contact-box h3 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+      position: relative;
     }
 
-    .skill-row:hover .skill-name {
-      color: #b4ef11;
+    .contact-box p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      position: relative;
     }
 
-    .skill-row:hover .skill-bar-fill {
-      background: #b4ef11;
+    .contact-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
     }
 
-    @media (max-width: 480px) {
-      .hero {
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    footer p {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== FADE IN ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-in:nth-child(2) { transition-delay: 0.08s; }
+    .fade-in:nth-child(3) { transition-delay: 0.16s; }
+    .fade-in:nth-child(4) { transition-delay: 0.24s; }
+    .fade-in:nth-child(5) { transition-delay: 0.32s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100vh;
+        background: rgba(8,12,20,0.97);
         flex-direction: column;
-        gap: 1rem;
-        padding: 2rem 1rem 1.5rem;
+        justify-content: center;
+        align-items: center;
+        gap: 36px;
+        z-index: 99;
       }
-      .hero-text h1 {
-        font-size: 24px;
-      }
-      .section {
-        padding: 1.5rem 1rem;
-      }
-      #toggle {
-        font-size: 11px;
-        padding: 6px 12px;
-      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.1rem; }
+      .hamburger { display: flex; }
+
+      #hero { padding: 100px 24px 80px; }
+      .hero-scroll-hint { left: 24px; }
+
+      .section { padding: 80px 24px; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      .works-grid { grid-template-columns: 1fr; }
+      .work-card.featured { grid-column: span 1; }
+
+      .skills-grid { grid-template-columns: 1fr; }
+
+      .contact-box { padding: 40px 24px; }
+
+      footer { padding: 32px 24px; }
     }
 
-    .work-card {
-      display: block;
-      background: #0f3460;
-      border: 0.5px solid #4a4a7a;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-decoration: none;
-      color: #ffffff;
-      margin-top: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .work-card:first-child {
-      margin-top: 0;
-    }
-
-    .work-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    @media (max-width: 600px) {
+      .hero-actions { flex-direction: column; }
+      .btn { justify-content: center; }
     }
   </style>
 </head>
 <body>
-    <button id="toggle">ライトモード</button>
 
-  <div class="hero">
-    <div class="avatar">KzM</div>
-    <div class="hero-text">
-      <h1>KzM</h1>
-      <p>learning to build things on the web</p>
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">KzM</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about" onclick="closeNav()">About</a></li>
+      <li><a href="#works" onclick="closeNav()">Works</a></li>
+      <li><a href="#skills" onclick="closeNav()">Skills</a></li>
+      <li><a href="#contact" onclick="closeNav()" class="nav-cta">依頼する</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">WEB CREATOR &amp; LP PRODUCER</div>
+      <h1 class="hero-name">Kz<span>M</span></h1>
+      <p class="hero-catch">
+        <strong>Webで、あなたのビジネスを動かす。</strong><br>
+        高品質なランディングページで、あなたの価値を届けます。
+      </p>
+      <div class="hero-actions">
+        <a href="#works" class="btn btn-primary">制作実績を見る →</a>
+        <a href="#contact" class="btn btn-ghost">LP制作を依頼する</a>
+      </div>
     </div>
-  </div>
-
-  <div class="section">
-    <p class="section-label">about</p>
-    <p class="intro-text">Web開発を学習中。<br>楽しい人生への歩み方をお伝えします。</p>
-  </div>
-
-  <div class="section">
-    <p class="section-label">skills</p>
-    <div class="skill-row" onclick="showDetail('HTML', 'Progateで学習済み!サイトの骨格を作れます。')">
-      <span class="skill-name">HTML</span>
-      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 70%"></div></div>
-      <span class="skill-pct">学習済</span>
+    <div class="hero-scroll-hint">
+      <div class="scroll-dot"></div>
+      <span>SCROLL</span>
     </div>
-    <div class="skill-row" onclick="showDetail('CSS', 'Progateで学習済み!見た目のデザインを作れます。')">
-      <span class="skill-name">CSS</span>
-      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 70%"></div></div>
-      <span class="skill-pct">学習済</span>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section">
+      <div class="section-header fade-in">
+        <span class="section-tag">About</span>
+        <h2 class="section-title">WebとAIで、<span>成果物を届ける。</span></h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text fade-in">
+          <p>
+            HTML・CSS・JavaScriptを駆使したWeb制作に加え、<strong>Claude Code（AIコーディングアシスタント）</strong>を活用することで、デザインクオリティと開発スピードを高い水準で両立しています。
+          </p>
+          <p>
+            「見た目が美しく、ビジネスに貢献するLP」を軸に、ヘアサロン・飲食店・個人事業主など幅広い業種向けのランディングページ制作に対応しています。
+          </p>
+          <p>
+            丁寧なヒアリングと迅速な納品を大切に、<strong>依頼者の想いをカタチ</strong>にすることを使命としています。
+          </p>
+        </div>
+        <div class="about-highlights fade-in">
+          <div class="highlight-card">
+            <div class="highlight-icon">🎨</div>
+            <div class="highlight-content">
+              <h4>高品質なLP制作</h4>
+              <p>HTML・CSSによるゼロからの実装。レスポンシブ対応・アニメーション付きのLPを制作できます。</p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon">⚡</div>
+            <div class="highlight-content">
+              <h4>AI活用で高速納品</h4>
+              <p>Claude Codeを活用することで、品質を保ちながら短納期での対応が可能です。</p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon">📱</div>
+            <div class="highlight-content">
+              <h4>スマホ完全対応</h4>
+              <p>スマートフォン・タブレット・PCすべての画面サイズに最適化したレスポンシブデザインを提供します。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="skill-row" onclick="showDetail('JavaScript', '現在学習中！アニメーションが作れるようになりました。')">
-      <span class="skill-name">JavaScript</span>
-      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 35%"></div></div>
-      <span class="skill-pct">学習中</span>
+  </section>
+
+  <!-- WORKS -->
+  <section id="works">
+    <div class="section">
+      <div class="section-header fade-in">
+        <span class="section-tag">Works</span>
+        <h2 class="section-title">制作<span>実績</span></h2>
+      </div>
+      <div class="works-grid">
+
+        <a href="salon-kaze.html" class="work-card featured fade-in">
+          <div class="work-tag-wrap">
+            <span class="work-tag purple">NEW</span>
+            <span class="work-tag">LP制作</span>
+            <span class="work-tag">HTML / CSS</span>
+            <span class="work-tag">レスポンシブ</span>
+          </div>
+          <div class="work-title">Salon Kaze — ヘアサロン LP</div>
+          <div class="work-desc">青森県の架空ヘアサロン向けに制作したランディングページ。ナチュラルテイストのデザイン・スクロールアニメーション・予約フォームを実装。スマホからPCまで完全対応。</div>
+          <div class="work-arrow">制作物を見る →</div>
+        </a>
+
+        <a href="game.html" class="work-card fade-in">
+          <div class="work-tag-wrap">
+            <span class="work-tag">JavaScript</span>
+          </div>
+          <div class="work-title">数字当てゲーム</div>
+          <div class="work-desc">1〜50の数字を当てるゲーム。ヒント表示・試行回数カウント機能を実装。</div>
+          <div class="work-arrow">開いて試す →</div>
+        </a>
+
+        <a href="todo.html" class="work-card fade-in">
+          <div class="work-tag-wrap">
+            <span class="work-tag">JavaScript</span>
+          </div>
+          <div class="work-title">ToDoアプリ</div>
+          <div class="work-desc">タスクの追加・完了・削除ができるToDoアプリ。シンプルで使いやすいUIに仕上げました。</div>
+          <div class="work-arrow">開いて試す →</div>
+        </a>
+
+        <a href="timer.html" class="work-card fade-in">
+          <div class="work-tag-wrap">
+            <span class="work-tag">JavaScript</span>
+          </div>
+          <div class="work-title">タイマー</div>
+          <div class="work-desc">スタート・ストップ・リセット機能を備えたタイマー。setIntervalを使いミリ秒単位で制御しています。</div>
+          <div class="work-arrow">開いて試す →</div>
+        </a>
+
+        <a href="weather.html" class="work-card fade-in">
+          <div class="work-tag-wrap">
+            <span class="work-tag">JavaScript</span>
+            <span class="work-tag">API</span>
+          </div>
+          <div class="work-title">天気アプリ（青森）</div>
+          <div class="work-desc">外部APIと連携し、青森市の現在の天気をリアルタイムで取得・表示。非同期処理（fetch）を活用しています。</div>
+          <div class="work-arrow">開いて試す →</div>
+        </a>
+
+      </div>
     </div>
-    <p id="detail-box" style="margin-top: 1rem; font-size: 14px; color: #aaaacc; min-height: 20px;"></p>
-  </div>
+  </section>
 
-  <div class="section">
-    <p class="section-label">goal</p>
-    <p class="intro-text">アプリを作る。<br>コードを通じて、人の生活をちょっと便利にしたい。</p>
-  </div>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section">
+      <div class="section-header fade-in">
+        <span class="section-tag">Skills</span>
+        <h2 class="section-title">使える<span>技術</span></h2>
+      </div>
+      <div class="skills-grid">
 
-  <div class="section">
-    <p class="section-label">message</p>
-    <p class="intro-text">笑顔のきっかけを作っていきます。</p>
-  </div>
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-name-wrap">
+              <div class="skill-icon html">H</div>
+              <span class="skill-label">HTML</span>
+            </div>
+            <span class="skill-level">実務対応可</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-width="90"></div>
+          </div>
+          <p class="skill-desc">セマンティックなマークアップ・アクセシビリティへの配慮・SEOを意識した構造設計が可能です。</p>
+        </div>
 
-  <div class="section">
-   <p class="section-label">message</p>
-   <p class="intro-text">笑顔のきっかけを作っていきます。</p>
-  </div>
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-name-wrap">
+              <div class="skill-icon css">C</div>
+              <span class="skill-label">CSS</span>
+            </div>
+            <span class="skill-level">実務対応可</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-width="88"></div>
+          </div>
+          <p class="skill-desc">FlexboxやGridレイアウト、アニメーション実装、レスポンシブデザインに対応。カスタムプロパティを活用した保守しやすいCSSを記述できます。</p>
+        </div>
 
-  <div class="section">
-   <p class="section-label">contact</p>
-   <a href="https://github.com/kzm-42" style="color: #b4ef11; font-size: 14px; text-decoration: none;">GitHub</a>
-  </div>
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-name-wrap">
+              <div class="skill-icon js">JS</div>
+              <span class="skill-label">JavaScript</span>
+            </div>
+            <span class="skill-level">基本〜応用</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-width="65"></div>
+          </div>
+          <p class="skill-desc">DOM操作・イベント処理・API連携（fetch / 非同期処理）・スクロールアニメーションなどのインタラクション実装に対応しています。</p>
+        </div>
 
-  <div class="section">
-    <p class="section-label">works</p>
-    <a href="game.html" class="work-card">
-      <p style="font-size: 16px; font-weight: 500; margin-bottom: 6px;">数字当てゲーム</p>
-      <p style="font-size: 13px; color: #aaaacc;">1〜50の数字を当てるゲーム。JavaScriptで作りました。</p>
-    </a>
-    <a href="todo.html" class="work-card">
-      <p style="font-size: 16px; font-weight: 500; margin-bottom: 6px;">ToDoアプリ</p>
-      <p style="font-size: 13px; color: #aaaacc;">タスクの追加・完了・削除ができるアプリ。JavaScriptで作りました。</p>
-    </a>
-    <a href="timer.html" class="work-card">
-      <p style="font-size: 16px; font-weight: 500; margin-bottom: 6px;">タイマー</p>
-      <p style="font-size: 13px; color: #aaaacc;">スタート・ストップ・リセット機能付きのタイマー。JavaScriptで作りました。</p>
-    </a>
-    <a href="weather.html" class="work-card">
-      <p style="font-size: 16px; font-weight: 500; margin-bottom: 6px;">天気アプリ</p>
-      <p style="font-size: 13px; color: #aaaacc;">APIを使って青森の本物の天気をリアルタイムで表示。</p>
-    </a>
-  </div>
+        <div class="skill-card fade-in">
+          <div class="skill-header">
+            <div class="skill-name-wrap">
+              <div class="skill-icon ai">AI</div>
+              <span class="skill-label">Claude Code</span>
+            </div>
+            <span class="skill-level">活用中</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-width="80"></div>
+          </div>
+          <p class="skill-desc">AIコーディングアシスタントを活用し、品質・スピード・コスト効率を高い水準で実現。複雑なレイアウトや機能実装にも柔軟に対応できます。</p>
+        </div>
 
-  <div class="section">
-    <p class="section-label">counter</p>
-    <p id="count-display" style="font-size: 48px; font-weight: 500; margin-bottom: 1rem;">0</p>
-    <button onclick="countUp()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px;">+1</button>
-    <button onclick="countDown()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">-1</button>
-    <button onclick="countReset()" style="background: #3a1a1a; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">リセット</button>
-    <button onclick="autoCount()" style="background: #0f3460; color: #ffffff; border: none; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-left: 8px;">自動カウント</button>
+      </div>
+    </div>
+  </section>
 
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section">
+      <div class="contact-box fade-in">
+        <h3>LP制作のご依頼、<br>お気軽にご相談ください。</h3>
+        <p>
+          業種・予算・納期などお気軽にご連絡ください。<br>
+          まずはヒアリングから、丁寧に対応いたします。
+        </p>
+        <div class="contact-actions">
+          <a href="https://github.com/kzm-42" target="_blank" rel="noopener" class="btn btn-primary">
+            GitHub でプロフィールを見る →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  
-  </div>
-
-  
-
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-logo">KzM</p>
+    <p>&copy; 2024 KzM. All rights reserved.</p>
+  </footer>
 
   <script>
-  const bars = document.querySelectorAll('.skill-bar-fill');
-  bars.forEach(function(bar) {
-    const width = bar.style.width;
-    bar.style.width = '0%';
-    setTimeout(function() {
-      bar.style.transition = 'width 1s ease';
-      bar.style.width = width;
-    }, 300);
-  });
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
 
-  const button = document.querySelector('#toggle');
-  button.addEventListener('click', function() {
-    document.body.classList.toggle('light');
-    if (document.body.classList.contains('light')) {
-      button.textContent = 'ダークモード';
-    } else {
-      button.textContent = 'ライトモード';
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    function closeNav() {
+      navLinks.classList.remove('open');
     }
-  });
 
-  function showDetail(name, text) {
-    const box = document.querySelector('#detail-box');
-    box.textContent = name + ' → ' + text;
-  }
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-  let count = 0;
-  let autoTimer = null;
-  function countUp() {
-    count = count + 1;
-    document.querySelector('#count-display').textContent = count;
-  }
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  function countDown() {
-    count = count - 1;
-    document.querySelector('#count-display').textContent = count;
-  }
+    // Skill bar animation
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fill = entry.target.querySelector('.skill-bar-fill');
+          if (fill) {
+            setTimeout(() => {
+              fill.style.width = fill.dataset.width + '%';
+            }, 200);
+          }
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
 
-  function countReset() {
-    count = 0;
-    document.querySelector('#count-display').textContent = count;
-  }
+    document.querySelectorAll('.skill-card').forEach(card => barObserver.observe(card));
 
-  function autoCount() {
-    clearTimeout(autoTimer);
-    count = 0;
-    let i = 1;
-    function step() {
-      if (i > 10) return;
-      count = i;
-      document.querySelector('#count-display').textContent = count;
-      i++;
-      autoTimer = setTimeout(step, 100);
-    }
-    step();
-  }
-
-
+    // Nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      nav.style.borderBottomColor = window.scrollY > 50
+        ? 'rgba(255,255,255,0.1)'
+        : 'rgba(255,255,255,0.07)';
+    });
   </script>
 
 </body>
-
-
 </html>
